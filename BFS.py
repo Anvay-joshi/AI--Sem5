@@ -1,7 +1,20 @@
-def search(start, goal, search_space):
+def printPath(start, goal, parent):
+    path = [goal]
+    path_node = goal
+    while(path_node != start):
+        path_node = parent[path_node]
+        path.append(path_node)
+    path.reverse()
+    print("\nPath: ", end = '')
+    for i in path:
+        print(i,end = " ")
+    print("\n")
+
+def search(start, goal, search_space, parent):
     open_list = [start]
     closed_list = []
-    n = len(search_space)
+    search_result = False
+    #n = len(search_space)
     while(len(open_list)):
         successors = []
         print(f"open list: {open_list}")
@@ -12,7 +25,9 @@ def search(start, goal, search_space):
             closed_list.append(n)
         if(n == goal):
             print("Goal test: True")
-            return True
+            #return True
+            search_result = True
+            break
         else:
             print("Goal test: False")
             children = search_space[n]
@@ -21,7 +36,10 @@ def search(start, goal, search_space):
                 if child not in closed_list and child not in open_list:
                     #open_list.insert(0,child)
                     open_list.append(child)
+                    parent[child] = n
         print(f"Successors: {successors}\n")
+    if(search_result):
+        printPath(start, goal, parent)
 
 
 def add_edge(search_space, u, v):
@@ -31,20 +49,26 @@ def add_edge(search_space, u, v):
         search_space[v] = []
     search_space[u].append(v)
     search_space[v].append(u)
+    #parent[u] = -1
+    #parent[v] = -1
     
 search_space = {}
-add_edge(search_space, 'a', 'b')
-add_edge(search_space, 'a', 'c')
-add_edge(search_space, 'a', 'h')
-add_edge(search_space, 'b', 'd')
-add_edge(search_space, 'b', 'f')
-add_edge(search_space, 'c', 'h')
-add_edge(search_space, 'c', 'd')
-add_edge(search_space, 'c', 'e')
-add_edge(search_space, 'd', 'e')
-add_edge(search_space, 'd', 'f')
-add_edge(search_space, 'e', 'g')
-add_edge(search_space, 'd', 'g')
-add_edge(search_space, 'f', 'g')
+parent = {}
 
-print(search('a', 'g', search_space))
+add_edge(search_space, 'A', 'B')
+add_edge(search_space, 'A', 'C')
+add_edge(search_space, 'A', 'H')
+add_edge(search_space, 'B', 'D')
+add_edge(search_space, 'B', 'F')
+add_edge(search_space, 'C', 'H')
+add_edge(search_space, 'C', 'D')
+add_edge(search_space, 'C', 'E')
+add_edge(search_space, 'D', 'E')
+add_edge(search_space, 'D', 'F')
+add_edge(search_space, 'E', 'G')
+add_edge(search_space, 'D', 'G')
+add_edge(search_space, 'F', 'G')
+
+start = 'H'
+goal = 'F'
+search(start, goal, search_space, parent)
