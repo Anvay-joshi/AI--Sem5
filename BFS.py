@@ -1,17 +1,27 @@
 def search(start, goal, search_space):
     open_list = [start]
     closed_list = []
+    n = len(search_space)
     while(len(open_list)):
+        successors = []
+        print(f"open list: {open_list}")
         n = open_list.pop(0)
+        print(f"current: {n}")
+        print(f"closed list: {closed_list}")
         if n not in closed_list:
             closed_list.append(n)
         if(n == goal):
+            print("Goal test: True")
             return True
         else:
+            print("Goal test: False")
             children = search_space[n]
             for child in children:
+                successors.append(child)
                 if child not in closed_list and child not in open_list:
-                    open_list.insert(0,child)
+                    #open_list.insert(0,child)
+                    open_list.append(child)
+        print(f"Successors: {successors}\n")
 
 
 def add_edge(search_space, u, v):
@@ -37,4 +47,4 @@ add_edge(search_space, 'e', 'g')
 add_edge(search_space, 'd', 'g')
 add_edge(search_space, 'f', 'g')
 
-print(search('a', 'h', search_space))
+print(search('a', 'g', search_space))
